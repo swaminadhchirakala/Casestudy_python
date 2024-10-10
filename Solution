@@ -1,0 +1,191 @@
+class Account:
+
+    def __init__(self,acc_num,acc_holder_name,balance=0):
+
+        self.acc_num = acc_num
+
+        self.acc_holder_name = acc_holder_name
+
+        self.balance = balance
+
+    def deposit(self,amount):
+
+        self.balance+=amount
+
+        print(f"Deposited Amount:{amount}")
+
+    def withdraw(self,amount):
+
+        if self.balance >= amount:
+
+            self.balance -= amount
+
+            print(f"Withdrawn amount:{amount}")
+
+        else:
+
+            print("Insufficient Balance")
+
+    def view_acc(self):
+
+        print(f"Account Number:{self.acc_num}")
+
+        print(f"Account Holder Name:{self.acc_holder_name}")
+
+        print(f"Balance:{self.balance}")
+
+    def transfer(self,recipient,amount):
+
+        if self.balance >= amount:
+
+            self.balance -= amount
+
+            recipient.deposit(amount)
+
+            print(f"Transfeered:{amount} to {recipient.acc_holder_name1}")
+
+        else:
+
+            print("Insufficient funds to transfer")
+
+ 
+ 
+class BankApp:
+
+    def __init__(self):
+
+        self.accounts={}
+ 
+    def createAccount(self):
+
+        acc_num = input("Enter account number")
+
+        if acc_num in self.accounts.keys():
+
+            print("Account Number already exists")
+        else:
+
+            name = input("Enter the account holder name")
+
+            deposit = float(input("Enter initial deposit"))
+
+            self.accounts[acc_num] = Account(acc_num,name,deposit)
+
+            print("Account created successfully")
+ 
+    def view_account(self):
+
+        acc_num = input("Enter account number")
+
+        account = self.accounts.get(acc_num)
+
+        if account:
+
+            account.view_acc()
+
+        else:
+
+            print("Account not found")
+ 
+    def deposits(self):
+
+        acc_num = input("Enter the account number")
+
+        account = self.accounts.get(acc_num)
+
+        if account:
+
+            amount = float(input("Enter the amount to deposit"))
+
+            account.deposit(amount)
+
+        else:
+
+            print("Account not found")
+ 
+    def withdraw(self):
+
+        acc_num = input("Enter the account number")
+
+        account = self.accounts.get(acc_num)
+
+        if account:
+
+            amount = float(input("Enter the amount to withdraw"))
+
+            account.withdraw(amount)
+
+        else:
+
+            print("Account not found")            
+ 
+    def transfer(self):
+
+        from_acc = input("Enter depositors account number")
+
+        to_acc = input("Enter receiver account number")
+
+        if from_acc and to_acc in self.accounts:
+
+            amount= int(input("Enter the amount to transfer"))
+
+            self.accounts[from_acc].transfer(self.accounts[to_acc],amount)
+
+        else:
+
+            print("One or both accounts not found")
+ 
+    def run(self):
+
+        while True:
+
+            print("\n Bank Menu:")
+
+            print("1.Create Account")
+
+            print("2.View account details")
+
+            print("3.Withdraw")
+
+            print("4.Deposit")
+
+            print("5.Fund Transfer")
+
+            print("6.Exit")
+
+            choice = int(input("Enter your choice to perform"))
+ 
+            if choice == 1:
+
+                self.createAccount()
+
+            elif choice == 2:
+
+                self.view_account()
+
+            elif choice == 3:
+
+                self.withdraw()     
+
+            elif choice == 4:
+
+                self.deposits()
+
+            elif choice == 5:
+
+                self.transfer()
+
+            elif choice == 6:
+
+                print("Terminating the process")
+
+                break
+
+            else:
+
+                print("Invalid choice")
+ 
+if __name__ == "__main__":
+
+    app = BankApp()
+    app.run()
